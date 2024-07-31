@@ -29,11 +29,11 @@
             justify-content: center;
         }
         .img-gallery img {
-            max-width: 100%;
+            max-width: calc(50% - 20px); /* ขนาดภาพที่พอดีกับหน้าจอมือถือ */
             height: auto;
             border-radius: 8px;
             margin: 10px;
-            max-width: calc(50% - 20px); /* ขนาดภาพที่พอดีกับหน้าจอมือถือ */
+            object-fit: cover; /* ให้ภาพครอบคลุมพื้นที่ที่จัดสรร */
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -128,13 +128,8 @@
             overflow: hidden;
         }
         .modal-body img {
-            max-width: 100%;
-            max-height: 80vh;
-            transition: transform 0.3s ease;
-            cursor: grab;
-        }
-        .modal-body img:active {
-            cursor: grabbing;
+            width: 100%; /* ให้ภาพเต็มพื้นที่ modal */
+            height: auto; /* ให้ความสูงของภาพเป็นอัตโนมัติ */
         }
 
         /* Media Queries for responsiveness */
@@ -223,6 +218,18 @@
             var myModal = new bootstrap.Modal(document.getElementById('imageModal'));
             myModal.show();
         }
+
+        // เพิ่มการตรวจสอบขนาดภาพใน modal
+        document.addEventListener('shown.bs.modal', function (e) {
+            const modalImage = document.getElementById('modalImage');
+            modalImage.onload = function() {
+                if (modalImage.naturalWidth < window.innerWidth) {
+                    modalImage.style.maxWidth = '100%'; // ให้ภาพขยายเต็มพื้นที่
+                } else {
+                    modalImage.style.maxWidth = 'auto'; // ใช้ขนาดเดิมของภาพ
+                }
+            }
+        });
     </script>
 </body>
 </html>
